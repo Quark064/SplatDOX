@@ -1,16 +1,10 @@
-import requests
-import config
+import socket, random
 
-playerList= ["172.217.164.4:443"]
+test = "10.0.0.1"
+test2 = 7778
+test3 = (test, test2)
 
-def decompIP(comp):
-    addr, port= comp.split(":")
-    return addr, port
+sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM) #Creates a socket
+bytes=random._urandom(1024)
 
-for x in range(0, len(playerList)):
-    addr= decompIP(playerList[x])[0]
-    print('https://api.freegeoip.app/json/{}?apikey={}'.format(addr, config.geoLocateAPI))
-    r = requests.get('https://api.freegeoip.app/json/{}?apikey={}'.format(addr, config.geoLocateAPI))
-    data = r.json()
-        
-    print(r)
+sock.sendto(bytes,(test3))
