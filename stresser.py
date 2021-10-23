@@ -21,4 +21,6 @@ def udpKnock(canidateList):
         bytes=random._urandom(1024)
         sock.sendto(bytes,(ip,port))
 
+# udpKnock()
+
     
