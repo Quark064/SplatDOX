@@ -11,7 +11,7 @@ def compIP(addr, port):
 # Returns two variables: IP address and port.
 def decompIP(comp):
     addr, port= comp.split(":")
-    return addr, port
+    return addr, int(port)
 
 # Prints messages to console. Messages printed by this function can be hidden by the config file.
 def log(msg):
@@ -23,7 +23,7 @@ def printPlayers(playerList):
     for x in range(0, len(playerList)):
         
         # Gets the lat/long of a specified IP address.
-        addr= decompIP(playerList[x])[0]
+        addr = decompIP(playerList[x])[0]
         r = requests.get('https://api.freegeoip.app/json/{}?apikey={}'.format(addr, config.geoLocateAPI))
         data = r.json()
         lat, long = data['latitude'], data['longitude']

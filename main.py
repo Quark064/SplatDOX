@@ -120,7 +120,7 @@ def feedbackLoop(packet):
 
 # Checks if the user is running in File or Live Capture mode.
 # If in Live Capture mode, it will call the feedbackLoop function every time a packet is recieved.
-# If in File mode, it will iterate through a (p)cap file and call the feedbackLoop function for each packet.
+# If in File mode, it will iterate through a (P)CAP file and call the feedbackLoop function for each packet.
 if config.useFile:
     for x in range(0, len(cap)):
         if finished:
